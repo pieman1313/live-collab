@@ -1,0 +1,40 @@
+#root > div:nth-of-type(2) {
+  min-width: unset;
+}
+
+#root > div:nth-of-type(2) div[class*="SnackbarItem-contentRoot"] {
+  min-width: unset;
+  background-color: #0c6170;
+}
+
+div[class^="custom-cursors-"] {
+  z-index: 1000;
+  display: inline-block;
+  position: relative;
+}
+
+span.cursor {
+  animation: blinker 1.3s linear infinite;
+  border-left-style: solid;
+  border-left-width: 2px;
+  height: 10px;
+  padding: 0;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+
+  border-bottom: 5px solid;
+  position: absolute;
+  left: -3px;
+  cursor: pointer;
+}
