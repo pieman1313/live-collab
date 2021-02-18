@@ -4,9 +4,21 @@ const WebSocket = require("ws");
 const { v4: uuidv4 } = require("uuid");
 const url = require("url");
 
-const port = 4000;
-const server = http.createServer(express);
+const PORT = process.env.PORT || 80;
+
+var app = express();
+
+app.use(express.static("build"));
+
+app.get("*", function (req, res) {
+  res.sendfile("./build/index.html");
+});
+
+const server = http.createServer(app);
+
 const wss = new WebSocket.Server({ server });
+
+server.listen(PORT);
 
 const state = {
   rooms: {},
@@ -174,10 +186,6 @@ wss.on("connection", function (connection, req) {
     type: "user-joined-room",
     user: connection.user,
   });
-});
-
-server.listen(port, function () {
-  console.log(`Server is listening on ${port}!`);
 });
 
 function init(connection, name, roomId) {

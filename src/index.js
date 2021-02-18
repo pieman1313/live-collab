@@ -14,6 +14,11 @@ ReactDOM.render(
         vertical: "bottom",
         horizontal: "center",
       }}
+      content={(key, message) => (
+        <div id={key} className="custom-snack">
+          <div>{message}</div>
+        </div>
+      )}
     >
       <AppProvider>
         <App />

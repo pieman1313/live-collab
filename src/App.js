@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
     marginTop: theme.spacing(8),
+    position: "relative",
   },
   autoMarginTop: {
     marginTop: "auto",

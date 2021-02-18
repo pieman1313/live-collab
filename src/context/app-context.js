@@ -34,9 +34,12 @@ export const AppProvider = (props) => {
   const [ws, setWs] = useState(null);
 
   const openWsConnection = (name, room) => {
-    const ws = new WebSocket(
-      `ws://${window.location.hostname}:4000?name=${name}&room=${room}`
-    );
+    const HOST =
+      process.env.NODE_ENV === "production"
+        ? window.location.origin.replace(/^http/, "ws")
+        : "ws://localhost/";
+
+    const ws = new WebSocket(`${HOST}?name=${name}&room=${room}`);
 
     ws.onclose = () => {
       setRoomFull(true);
