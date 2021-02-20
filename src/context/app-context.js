@@ -1,4 +1,5 @@
 import React, { createContext, useState } from "react";
+import { useDebounce } from "use-debounce/lib";
 
 export const AppContext = createContext({});
 
@@ -6,6 +7,9 @@ export const AppProvider = (props) => {
   const { children } = props;
 
   const [name, setName] = useState("");
+
+  const [previewRefreshForcer, setPreviewRefreshForcer] = useState("");
+  const [previewRefreshToken] = useDebounce(previewRefreshForcer, 500);
 
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState([]);
@@ -16,6 +20,8 @@ export const AppProvider = (props) => {
   const [jsOpen, setJsOpen] = useState(false);
   const [cssOpen, setCssOpen] = useState(false);
   const [htmlOpen, setHtmlOpen] = useState(false);
+
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const [jsNotification, setJsNotification] = useState(false);
   const [cssNotification, setCssNotification] = useState(false);
@@ -41,10 +47,6 @@ export const AppProvider = (props) => {
 
     const ws = new WebSocket(`${HOST}?name=${name}&room=${room}`);
 
-    ws.onclose = () => {
-      setRoomFull(true);
-    };
-
     setWs(ws);
     return ws;
   };
@@ -67,6 +69,7 @@ export const AppProvider = (props) => {
     setRanges({});
     setWs(null);
     setRoomFull(false);
+    setPreviewOpen(false);
   };
 
   const appContext = {
@@ -108,6 +111,11 @@ export const AppProvider = (props) => {
     setUser,
     roomFull,
     setRoomFull,
+    previewOpen,
+    setPreviewOpen,
+    previewRefreshForcer,
+    setPreviewRefreshForcer,
+    previewRefreshToken,
   };
 
   return (

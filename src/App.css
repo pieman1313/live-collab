@@ -1,3 +1,7 @@
+html {
+  overflow: hidden;
+}
+
 div[class^="custom-cursors-"] {
   z-index: 1000;
   display: inline-block;

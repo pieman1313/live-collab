@@ -25,10 +25,10 @@ const useStyles = makeStyles((theme) => ({
     width: "100vw",
     height: "100vh",
     backgroundColor: "#DBF5F0",
+    overflow: "auto",
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
     marginTop: theme.spacing(8),
     position: "relative",
   },
@@ -76,6 +76,9 @@ export default function App() {
     setCursors,
     setRanges,
     ws,
+    setPreviewRefreshForcer,
+    previewOpen,
+    setRoomFull,
   } = useContext(AppContext);
 
   useEffect(() => {
@@ -96,14 +99,17 @@ export default function App() {
           case "update-js":
             !jsOpen && setJsNotification(true);
             setJsEditorValue(data.value);
+            previewOpen && setPreviewRefreshForcer(Math.random());
             break;
           case "update-css":
             !cssOpen && setCssNotification(true);
             setCssEditorValue(data.value);
+            previewOpen && setPreviewRefreshForcer(Math.random());
             break;
           case "update-html":
             !htmlOpen && setHtmlNotification(true);
             setHtmlEditorValue(data.value);
+            previewOpen && setPreviewRefreshForcer(Math.random());
             break;
           case "update-cursors":
             setCursors(data.value);
@@ -127,17 +133,29 @@ export default function App() {
             break;
         }
       };
-      ws.onerror = () => {
-        reset();
-        enqueueSnackbar(`An error occured.`, {
-          autoHideDuration: 2000,
-        });
-        history.push("/");
+      ws.onclose = (event) => {
+        switch (event.code) {
+          case 1005:
+            reset();
+            history.push("/");
+            break;
+          case 1006:
+            reset();
+            enqueueSnackbar(`An error occured.`, {
+              autoHideDuration: 2000,
+            });
+            history.push("/");
+            break;
+          case 4000:
+            setRoomFull(true);
+            break;
+          default:
+            break;
+        }
       };
-      ws.onclose = reset;
     }
     //TODO VERIFY CALLS
-  }, [ws, jsOpen, cssOpen, htmlOpen, users]);
+  }, [ws, jsOpen, cssOpen, htmlOpen, users, previewOpen]);
 
   const handleDrawerOpen = () => {
     setDrawerOpen(true);

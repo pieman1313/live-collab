@@ -54,7 +54,8 @@ export default function Home(props) {
     setRoomId(e.target.value);
   };
 
-  const onHost = () => {
+  const onHost = (e) => {
+    e.preventDefault();
     if (name) {
       const roomId = uuidv4();
 
@@ -86,12 +87,11 @@ export default function Home(props) {
   return (
     <Container maxWidth="xs">
       <CssBaseline />
-      <form>
+      <form onSubmit={onHost}>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <FontAwesomeIcon icon={faUserFriends} size="4x" />
           </Avatar>
-
           <TextField
             variant="outlined"
             margin="normal"
@@ -108,7 +108,6 @@ export default function Home(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={onHost}
           >
             Host
           </Button>

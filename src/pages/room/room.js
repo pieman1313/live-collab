@@ -1,9 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppContext } from "../../context/app-context";
 import { validate as isValidUuid } from "uuid";
-import { CircularProgress, Container, Typography } from "@material-ui/core";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  CircularProgress,
+  Container,
+  Typography,
+} from "@material-ui/core";
 import { Redirect, useParams } from "react-router-dom";
 
 import Editor from "../../components/editor/editor";
@@ -13,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: "100%",
     display: "flex",
+    flexDirection: "column",
   },
   editors: {
     width: "100%",
@@ -21,7 +30,9 @@ const useStyles = makeStyles((theme) => ({
     columnGap: theme.spacing(2),
     [theme.breakpoints.down("sm")]: {
       display: "block",
+      height: "auto",
     },
+    padding: theme.spacing(2),
   },
   single: {
     gridTemplateColumns: "1fr",
@@ -35,19 +46,25 @@ const useStyles = makeStyles((theme) => ({
   editor: {
     overflow: "hidden",
     [theme.breakpoints.down("sm")]: {
-      height: "80vh",
+      height: "calc(100vh - 160px)",
       marginBottom: theme.spacing(2),
     },
   },
   spinner: {
     margin: "0 auto",
-    alignSelf: "center",
+    position: "relative",
+    top: "calc(50% - 40px)",
   },
   uhoh: {
     textAlign: "center",
   },
   uhohcontainer: {
     marginTop: theme.spacing(8),
+  },
+  iframe: {
+    width: "100%",
+    height: "300px",
+    maxHeight: "30vh",
   },
 }));
 
@@ -77,6 +94,10 @@ export default function Room() {
     ranges,
     roomFull,
     setRoomFull,
+    previewOpen,
+    setPreviewOpen,
+    previewRefreshToken,
+    setPreviewRefreshForcer,
   } = useContext(AppContext);
 
   const openEditorsNumber = () => jsOpen + cssOpen + htmlOpen;
@@ -101,6 +122,7 @@ export default function Room() {
         value,
       })
     );
+    previewOpen && setPreviewRefreshForcer(Math.random());
   };
 
   const setHtmlValue = (value) => {
@@ -111,6 +133,7 @@ export default function Room() {
         value,
       })
     );
+    previewOpen && setPreviewRefreshForcer(Math.random());
   };
 
   const setCssValue = (value) => {
@@ -121,6 +144,7 @@ export default function Room() {
         value,
       })
     );
+    previewOpen && setPreviewRefreshForcer(Math.random());
   };
 
   const setJsCursor = (value) => {
@@ -196,59 +220,90 @@ export default function Room() {
     );
   } else if (room) {
     ret = (
-      <div
-        className={clsx({
-          [classes.editors]: true,
-          [classes.single]: openEditorsNumber() === 1,
-          [classes.double]: openEditorsNumber() === 2,
-          [classes.tripple]: openEditorsNumber() === 3,
-        })}
-      >
-        {jsOpen && (
-          <div className={classes.editor}>
-            <Editor
-              title="JavaScript"
-              mode="javascript"
-              value={jsEditorValue}
-              setValue={setJsValue}
-              setCursor={setJsCursor}
-              cursors={cursors.js}
-              ranges={ranges.js}
-              changeRange={changeJsRange}
-            ></Editor>
-          </div>
+      <>
+        <div
+          className={clsx({
+            [classes.editors]: true,
+            [classes.single]: openEditorsNumber() === 1,
+            [classes.double]: openEditorsNumber() === 2,
+            [classes.tripple]: openEditorsNumber() === 3,
+          })}
+        >
+          {jsOpen && (
+            <div className={classes.editor}>
+              <Editor
+                title="JavaScript"
+                mode="javascript"
+                value={jsEditorValue}
+                setValue={setJsValue}
+                setCursor={setJsCursor}
+                cursors={cursors.js}
+                ranges={ranges.js}
+                changeRange={changeJsRange}
+              ></Editor>
+            </div>
+          )}
+          {htmlOpen && (
+            <div className={classes.editor}>
+              <Editor
+                autoCursor="true"
+                title="HTML"
+                mode="htmlmixed"
+                value={htmlEditorValue}
+                setValue={setHtmlValue}
+                setCursor={setHtmlCursor}
+                cursors={cursors.html}
+                ranges={ranges.html}
+                changeRange={changeHtmlRange}
+              ></Editor>
+            </div>
+          )}
+          {cssOpen && (
+            <div className={classes.editor}>
+              <Editor
+                autoCursor="true"
+                title="CSS"
+                mode="css"
+                value={cssEditorValue}
+                setValue={setCssValue}
+                setCursor={setCssCursor}
+                cursors={cursors.css}
+                ranges={ranges.css}
+                changeRange={changeCssRange}
+              ></Editor>
+            </div>
+          )}
+        </div>
+        {(jsOpen || cssOpen || htmlOpen) && (
+          <Accordion
+            expanded={previewOpen}
+            onChange={() => {
+              setPreviewOpen(!previewOpen);
+            }}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography className={classes.heading}>Preview</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {previewOpen && (
+                <iframe
+                  className={classes.iframe}
+                  src={
+                    process.env.NODE_ENV === "production"
+                      ? `/preview/room/${roomId}/?${previewRefreshToken}`
+                      : `http://localhost/preview/room/${roomId}/?${previewRefreshToken}`
+                  }
+                  title="preview"
+                ></iframe>
+              )}
+            </AccordionDetails>
+          </Accordion>
         )}
-        {htmlOpen && (
-          <div className={classes.editor}>
-            <Editor
-              autoCursor="true"
-              title="HTML"
-              mode="htmlmixed"
-              value={htmlEditorValue}
-              setValue={setHtmlValue}
-              setCursor={setHtmlCursor}
-              cursors={cursors.html}
-              ranges={ranges.html}
-              changeRange={changeHtmlRange}
-            ></Editor>
-          </div>
-        )}
-        {cssOpen && (
-          <div className={classes.editor}>
-            <Editor
-              autoCursor="true"
-              title="CSS"
-              mode="css"
-              value={cssEditorValue}
-              setValue={setCssValue}
-              setCursor={setCssCursor}
-              cursors={cursors.css}
-              ranges={ranges.css}
-              changeRange={changeCssRange}
-            ></Editor>
-          </div>
-        )}
-      </div>
+      </>
     );
   } else {
     ret = <CircularProgress className={classes.spinner} />;

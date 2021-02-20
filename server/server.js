@@ -8,7 +8,20 @@ const PORT = process.env.PORT || 80;
 
 var app = express();
 
+app.set("view engine", "ejs");
+
 app.use(express.static("build"));
+
+app.get("/preview/room/:roomId", function (req, res) {
+  const roomId = req.params.roomId;
+  const roomState = state.rooms[roomId];
+  roomState &&
+    res.render("preview", {
+      js: state.rooms[roomId].editors.js.value,
+      css: state.rooms[roomId].editors.css.value,
+      html: state.rooms[roomId].editors.html.value,
+    });
+});
 
 app.get("*", function (req, res) {
   res.sendfile("./build/index.html");
@@ -32,7 +45,7 @@ wss.on("connection", function (connection, req) {
   const name = parameters.query.name;
 
   if (state.rooms[roomId] && state.rooms[roomId].users.length === 4) {
-    connection.terminate();
+    connection.close(4000);
     return;
   }
 
