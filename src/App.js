@@ -83,6 +83,10 @@ export default function App() {
 
   useEffect(() => {
     if (ws) {
+      ws.onopen = () => {
+        !ws.interval && ws.startInterval();
+      };
+
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
 
@@ -152,6 +156,7 @@ export default function App() {
           default:
             break;
         }
+        ws.stopInterval();
       };
     }
     //TODO VERIFY CALLS

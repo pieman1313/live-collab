@@ -47,6 +47,17 @@ export const AppProvider = (props) => {
 
     const ws = new WebSocket(`${HOST}?name=${name}&room=${room}`);
 
+    ws.startInterval = () => {
+      ws.interval = setInterval(() => {
+        ws.send(JSON.stringify({ ping: "ping" }));
+      }, 10000);
+    };
+
+    ws.stopInterval = () => {
+      clearInterval(ws.interval);
+      ws.interval = null;
+    };
+
     setWs(ws);
     return ws;
   };
