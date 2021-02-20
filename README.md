@@ -17,10 +17,17 @@ Live collaboration tool
 ## Starting it up
 
 - Docker
+
   `docker-compose up`
+
   > http://localhost
+
 - Development
-  > prereq: node + `npm install`
-  > `npm start` <- starts backend
-  > `npm run dev` <- starts frontend dev server
-  > http://localhost:3000
+
+> prereq: node + `npm install`
+
+    `npm start` <- starts backend
+
+    `npm run dev` <- starts frontend dev server
+
+    > http://localhost:3000
