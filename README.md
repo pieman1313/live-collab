@@ -24,10 +24,10 @@ Live collaboration tool
 
 - Development
 
-> prereq: node + `npm install`
+  > prereq: node + `npm install`
 
-    `npm start` <- starts backend
+  `npm start` <- starts backend
 
-    `npm run dev` <- starts frontend dev server
+  `npm run dev` <- starts frontend dev server
 
-    > http://localhost:3000
+  http://localhost:3000
