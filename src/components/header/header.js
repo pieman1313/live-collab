@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     cursor: "pointer",
   },
+  h6: {
+    paddingRight: theme.spacing(2),
+  },
 }));
 
 export default function Header(props) {
@@ -73,7 +76,7 @@ export default function Header(props) {
           </IconButton>
         )}
         <Link to="/" className={classes.link}>
-          <Typography variant="h6" noWrap className={classes.pointer}>
+          <Typography variant="h6" noWrap className={classes.h6}>
             live-collab
           </Typography>
         </Link>

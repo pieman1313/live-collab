@@ -9,9 +9,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import Divider from "@material-ui/core/Divider";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import { AppContext } from "../../context/app-context";
+import { IconButton } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   editor: {
@@ -28,6 +29,18 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     overflow: "hidden",
   },
+  cardHeader: {
+    backgroundColor: "#0c6170",
+    padding: 0,
+    height: "32px",
+    flexShrink: 0,
+  },
+  close: {
+    color: "white",
+    position: "relative",
+    top: "10px",
+    right: "16px",
+  },
 }));
 
 export default function Editor(props) {
@@ -38,7 +51,6 @@ export default function Editor(props) {
   const { user } = useContext(AppContext);
 
   const {
-    title,
     mode,
     value,
     setValue,
@@ -46,6 +58,7 @@ export default function Editor(props) {
     cursors,
     changeRange,
     ranges,
+    onClose,
   } = props;
 
   useEffect(() => {
@@ -102,9 +115,15 @@ export default function Editor(props) {
   }, [ranges, editor]);
 
   return (
-    <Card className={classes.editor}>
-      <CardHeader title={title} />
-      <Divider />
+    <Card className={classes.editor} variant="outlined">
+      <CardHeader
+        className={classes.cardHeader}
+        action={
+          <IconButton size="small" className={classes.close} onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        }
+      />
       <div className={classes.codeContainer}>
         <CodeMirror
           className={classes.code}

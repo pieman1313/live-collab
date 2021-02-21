@@ -60,7 +60,8 @@ export default function Join() {
     history.push(`/`);
   };
 
-  const onJoin = () => {
+  const onJoin = (e) => {
+    e.preventDefault();
     if (name && isValidUuid(roomId)) {
       setNameError(false);
       setRoomIdError(false);
@@ -79,7 +80,7 @@ export default function Join() {
   return (
     <Container maxWidth="xs">
       <CssBaseline />
-      <form>
+      <form onSubmit={onJoin}>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <FontAwesomeIcon icon={faUserFriends} size="4x" />
@@ -111,7 +112,6 @@ export default function Join() {
             color="primary"
             className={classes.submit}
             disabled={!roomId}
-            onClick={onJoin}
           >
             Join
           </Button>

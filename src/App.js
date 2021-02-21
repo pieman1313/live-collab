@@ -25,12 +25,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100vw",
     height: "100vh",
     backgroundColor: "#DBF5F0",
-    overflow: "auto",
+    overflow: "hidden",
   },
   content: {
     flexGrow: 1,
     marginTop: theme.spacing(8),
     position: "relative",
+    overflow: "hidden",
   },
   autoMarginTop: {
     marginTop: "auto",

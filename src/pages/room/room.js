@@ -8,6 +8,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Avatar,
   CircularProgress,
   Container,
   Typography,
@@ -15,6 +16,12 @@ import {
 import { Redirect, useParams } from "react-router-dom";
 
 import Editor from "../../components/editor/editor";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCss3,
+  faHtml5,
+  faJsSquare,
+} from "@fortawesome/free-brands-svg-icons";
 
 const useStyles = makeStyles((theme) => ({
   room: {
@@ -22,17 +29,22 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     display: "flex",
     flexDirection: "column",
+    overflow: "hidden",
   },
   editors: {
     width: "100%",
     height: "100%",
     display: "grid",
     columnGap: theme.spacing(2),
+    overflow: "hidden",
     [theme.breakpoints.down("sm")]: {
       display: "block",
       height: "auto",
+      overflow: "auto",
     },
     padding: theme.spacing(2),
+    paddingTop: 0,
+    paddingBottom: theme.spacing(4),
   },
   single: {
     gridTemplateColumns: "1fr",
@@ -44,9 +56,11 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateColumns: "1fr 1fr 1fr",
   },
   editor: {
+    height: "100%",
     overflow: "hidden",
+    flexGrow: 1,
     [theme.breakpoints.down("sm")]: {
-      height: "calc(100vh - 160px)",
+      height: "calc(100vh - 216px)",
       marginBottom: theme.spacing(2),
     },
   },
@@ -66,6 +80,38 @@ const useStyles = makeStyles((theme) => ({
     height: "300px",
     maxHeight: "30vh",
   },
+  jsAvatar: {
+    backgroundColor: "#f0db4f",
+    position: "relative",
+    top: "23px",
+    left: "10px",
+  },
+  cssAvatar: {
+    backgroundColor: "#2965f1",
+    position: "relative",
+    top: "23px",
+    left: "10px",
+  },
+  htmlAvatar: {
+    backgroundColor: "#e34c26",
+    position: "relative",
+    top: "23px",
+    left: "10px",
+  },
+  editorContainer: {
+    position: "relative",
+    overflow: "hidden",
+    display: "flex",
+    flexDirection: "column",
+  },
+  accordion: {
+    backgroundColor: "#0c6170",
+    color: "white",
+    height: "64px",
+  },
+  expand: {
+    color: "white",
+  },
 }));
 
 export default function Room() {
@@ -81,6 +127,9 @@ export default function Room() {
     jsOpen,
     cssOpen,
     htmlOpen,
+    setJsOpen,
+    setCssOpen,
+    setHtmlOpen,
     jsEditorValue,
     setJsEditorValue,
     cssEditorValue,
@@ -201,6 +250,18 @@ export default function Room() {
     );
   };
 
+  const closeJs = () => {
+    setJsOpen(false);
+  };
+
+  const closeCss = () => {
+    setCssOpen(false);
+  };
+
+  const closeHtml = () => {
+    setHtmlOpen(false);
+  };
+
   let ret;
 
   if (!name) {
@@ -230,47 +291,60 @@ export default function Room() {
           })}
         >
           {jsOpen && (
-            <div className={classes.editor}>
-              <Editor
-                title="JavaScript"
-                mode="javascript"
-                value={jsEditorValue}
-                setValue={setJsValue}
-                setCursor={setJsCursor}
-                cursors={cursors.js}
-                ranges={ranges.js}
-                changeRange={changeJsRange}
-              ></Editor>
+            <div className={classes.editorContainer}>
+              <Avatar className={classes.jsAvatar}>
+                <FontAwesomeIcon icon={faJsSquare} size="lg" />
+              </Avatar>
+              <div className={classes.editor}>
+                <Editor
+                  mode="javascript"
+                  value={jsEditorValue}
+                  setValue={setJsValue}
+                  setCursor={setJsCursor}
+                  cursors={cursors.js}
+                  ranges={ranges.js}
+                  changeRange={changeJsRange}
+                  onClose={closeJs}
+                ></Editor>
+              </div>
             </div>
           )}
           {htmlOpen && (
-            <div className={classes.editor}>
-              <Editor
-                autoCursor="true"
-                title="HTML"
-                mode="htmlmixed"
-                value={htmlEditorValue}
-                setValue={setHtmlValue}
-                setCursor={setHtmlCursor}
-                cursors={cursors.html}
-                ranges={ranges.html}
-                changeRange={changeHtmlRange}
-              ></Editor>
+            <div className={classes.editorContainer}>
+              <Avatar className={classes.htmlAvatar}>
+                <FontAwesomeIcon icon={faHtml5} size="lg" />
+              </Avatar>
+              <div className={classes.editor}>
+                <Editor
+                  mode="htmlmixed"
+                  value={htmlEditorValue}
+                  setValue={setHtmlValue}
+                  setCursor={setHtmlCursor}
+                  cursors={cursors.html}
+                  ranges={ranges.html}
+                  changeRange={changeHtmlRange}
+                  onClose={closeHtml}
+                ></Editor>
+              </div>
             </div>
           )}
           {cssOpen && (
-            <div className={classes.editor}>
-              <Editor
-                autoCursor="true"
-                title="CSS"
-                mode="css"
-                value={cssEditorValue}
-                setValue={setCssValue}
-                setCursor={setCssCursor}
-                cursors={cursors.css}
-                ranges={ranges.css}
-                changeRange={changeCssRange}
-              ></Editor>
+            <div className={classes.editorContainer}>
+              <Avatar className={classes.cssAvatar}>
+                <FontAwesomeIcon icon={faCss3} size="lg" />
+              </Avatar>
+              <div className={classes.editor}>
+                <Editor
+                  mode="css"
+                  value={cssEditorValue}
+                  setValue={setCssValue}
+                  setCursor={setCssCursor}
+                  cursors={cursors.css}
+                  ranges={ranges.css}
+                  changeRange={changeCssRange}
+                  onClose={closeCss}
+                ></Editor>
+              </div>
             </div>
           )}
         </div>
@@ -282,9 +356,10 @@ export default function Room() {
             }}
           >
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
+              expandIcon={<ExpandMoreIcon className={classes.expand} />}
               aria-controls="panel1a-content"
               id="panel1a-header"
+              className={classes.accordion}
             >
               <Typography className={classes.heading}>Preview</Typography>
             </AccordionSummary>
