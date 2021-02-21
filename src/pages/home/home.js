@@ -14,6 +14,10 @@ import { v4 as uuidv4, validate as isValidUuid } from "uuid";
 import { AppContext } from "../../context/app-context";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    overflow: "auto",
+    height: "100%",
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
@@ -85,57 +89,59 @@ export default function Home(props) {
   };
 
   return (
-    <Container maxWidth="xs">
-      <CssBaseline />
-      <form onSubmit={onHost}>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <FontAwesomeIcon icon={faUserFriends} size="4x" />
-          </Avatar>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            label="Name"
-            onChange={handleNameChange}
-            value={name}
-            error={nameError}
-            helperText={nameError ? "Required" : null}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Host
-          </Button>
-          <Typography variant="h6" noWrap>
-            - or -
-          </Typography>
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            disabled={!roomId}
-            onClick={onJoin}
-          >
-            Join
-          </Button>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            label="Room"
-            onChange={handleRoomIdChange}
-            value={roomId}
-            error={roomIdError}
-            helperText={roomIdError ? "Valid uuid required" : null}
-          />
-        </div>
-      </form>
+    <Container className={classes.root}>
+      <Container maxWidth="xs">
+        <CssBaseline />
+        <form onSubmit={onHost}>
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <FontAwesomeIcon icon={faUserFriends} size="4x" />
+            </Avatar>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              label="Name"
+              onChange={handleNameChange}
+              value={name}
+              error={nameError}
+              helperText={nameError ? "Required" : null}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Host
+            </Button>
+            <Typography variant="h6" noWrap>
+              - or -
+            </Typography>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              disabled={!roomId}
+              onClick={onJoin}
+            >
+              Join
+            </Button>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              label="Room"
+              onChange={handleRoomIdChange}
+              value={roomId}
+              error={roomIdError}
+              helperText={roomIdError ? "Valid uuid required" : null}
+            />
+          </div>
+        </form>
+      </Container>
     </Container>
   );
 }

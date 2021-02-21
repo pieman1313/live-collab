@@ -28,10 +28,15 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
   },
   content: {
+    display: "flex",
+    flexDirection: "column",
     flexGrow: 1,
     marginTop: theme.spacing(8),
     position: "relative",
     overflow: "hidden",
+    [theme.breakpoints.down("xs")]: {
+      marginTop: theme.spacing(7),
+    },
   },
   autoMarginTop: {
     marginTop: "auto",

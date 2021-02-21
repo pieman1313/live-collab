@@ -6,6 +6,13 @@ Live collaboration tool
 - supports 3 languages JS, CSS, HTML
 - up to 4 people max / room
 - live preview
+- mobile friendly
+
+## Preview
+
+https://live-collab.herokuapp.com/
+
+Developed for Ness Innovation Hackathon 2021
 
 ## Main Libraries
 
@@ -30,4 +37,4 @@ Live collaboration tool
 
   `npm run dev` <- starts frontend dev server
 
-  http://localhost:3000
+  > http://localhost:3000
