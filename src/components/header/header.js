@@ -11,9 +11,11 @@ import { useSnackbar } from "notistack";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import Design from "../design/design";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
+    overflow: "hidden",
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
@@ -75,6 +77,7 @@ export default function Header(props) {
             <MenuIcon />
           </IconButton>
         )}
+        <Design></Design>
         <Link to="/" className={classes.link}>
           <Typography variant="h6" noWrap className={classes.h6}>
             live-collab

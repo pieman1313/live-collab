@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   accordion: {
-    backgroundColor: "#0c6170",
+    backgroundColor: "#00887C",
     color: "white",
     height: "64px",
   },
