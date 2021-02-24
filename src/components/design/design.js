@@ -6,6 +6,9 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     left: "0px",
     zIndex: -1,
+    display: "block",
+    width: "100%",
+    height: "100%",
   },
   pill: {
     display: "block",
@@ -41,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     },
     "&:nth-of-type(6)": {
       left: "calc(100% - 200px)",
-      top: "-20px",
+      top: "-62px",
       width: "200px",
       height: "80px",
     },
