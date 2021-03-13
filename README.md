@@ -1,5 +1,7 @@
 # live-collab
 
+Developed for Ness Innovation Hackathon 2021
+
 Live collaboration tool
 
 - easy to host / join rooms
@@ -11,8 +13,6 @@ Live collaboration tool
 ## Preview
 
 https://live-collab.herokuapp.com/
-
-Developed for Ness Innovation Hackathon 2021
 
 ## Main Libraries
 

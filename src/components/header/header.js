@@ -12,6 +12,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Design from "../design/design";
+import GitHubIcon from "@material-ui/icons/GitHub";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -47,6 +48,12 @@ const useStyles = makeStyles((theme) => ({
   },
   h6: {
     paddingRight: theme.spacing(2),
+  },
+  git: {
+    marginLeft: "auto",
+  },
+  gitRoom: {
+    marginLeft: theme.spacing(2),
   },
 }));
 
@@ -99,6 +106,18 @@ export default function Header(props) {
             </Tooltip>
           </CopyToClipboard>
         )}
+        <Tooltip title="Github repo">
+          <IconButton
+            color="inherit"
+            aria-label="github repo link"
+            edge="end"
+            component="a"
+            href="https://github.com/pieman1313/live-collab"
+            className={room ? classes.gitRoom : classes.git}
+          >
+            <GitHubIcon />
+          </IconButton>
+        </Tooltip>
       </Toolbar>
     </AppBar>
   );
