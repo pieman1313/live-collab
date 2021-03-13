@@ -1,6 +1,6 @@
 # live-collab
 
-Developed for Ness Innovation Hackathon 2021
+Developed for [Ness](https://www.ness.com/romania-en/) Innovation Hackathon 2021
 
 Live collaboration tool
 
